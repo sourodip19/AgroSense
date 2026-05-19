@@ -13,6 +13,7 @@ class CropProgress extends Model
         'progress_percentage',
         'predicted_yield',
         'notes',
+        'crop_age',
     ];
 
     public function field()

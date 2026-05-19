@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Field;
 use App\Models\CropProgress;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 class CropProgressController extends Controller
 {
     public function index()
@@ -32,9 +32,51 @@ class CropProgressController extends Controller
             'predicted_yield' => 'required|numeric',
         ]);
 
-        CropProgress::create($request->all());
+        $field = Field::findOrFail($request->field_id);
+
+$cropAge = Carbon::parse($field->sowing_date)
+    ->diffInDays(now());
+
+CropProgress::create([
+
+    'field_id' => $request->field_id,
+
+   'growth_stage' => $this->detectGrowthStage($cropAge),
+
+    'health_percentage' => $request->health_percentage,
+
+    'progress_percentage' => $request->progress_percentage,
+
+    'predicted_yield' => $request->predicted_yield,
+
+    'notes' => $request->notes,
+
+    'crop_age' => $cropAge,
+
+]);
 
         return redirect()->route('crop-progress.index')
             ->with('success', 'Crop Progress Added');
     }
+
+    private function detectGrowthStage($cropAge)
+{
+    if ($cropAge <= 10) {
+        return 'Germination';
+    }
+
+    if ($cropAge <= 30) {
+        return 'Vegetative';
+    }
+
+    if ($cropAge <= 60) {
+        return 'Flowering';
+    }
+
+    if ($cropAge <= 90) {
+        return 'Fruiting';
+    }
+
+    return 'Harvest';
+}
 }

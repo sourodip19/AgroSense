@@ -83,6 +83,32 @@
 
                             <span class="font-bold text-green-500">
                                 {{ $progress->health_percentage }}%
+
+@if($progress->health_percentage >= 80)
+
+    <span class="text-green-500 text-sm ml-2">
+        Excellent
+    </span>
+
+@elseif($progress->health_percentage >= 60)
+
+    <span class="text-blue-500 text-sm ml-2">
+        Good
+    </span>
+
+@elseif($progress->health_percentage >= 40)
+
+    <span class="text-yellow-500 text-sm ml-2">
+        Average
+    </span>
+
+@else
+
+    <span class="text-red-500 text-sm ml-2">
+        Critical
+    </span>
+
+@endif
                             </span>
 
                         </div>
@@ -143,6 +169,26 @@
                         </h3>
 
                     </div>
+
+                    <!-- Crop Age -->
+<div class="mb-6">
+
+    <p class="text-gray-500 dark:text-gray-400 mb-2">
+        Crop Age
+    </p>
+
+    <h3 class="text-3xl font-bold
+               text-gray-800 dark:text-white">
+
+        {{ $progress->crop_age }}
+
+        <span class="text-lg">
+            days
+        </span>
+
+    </h3>
+
+</div>
 
                     <!-- Notes -->
                     <div class="bg-gray-50 dark:bg-[#0d1b2e]

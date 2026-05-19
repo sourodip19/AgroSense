@@ -56,7 +56,7 @@
                     </div>
 
                     <!-- Growth Stage -->
-                    <div>
+                    <!-- <div>
 
                         <label class="block mb-3
                                       text-lg font-semibold
@@ -97,7 +97,7 @@
 
                         </select>
 
-                    </div>
+                    </div> -->
 
                     <!-- Health -->
                     <div>

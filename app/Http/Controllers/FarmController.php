@@ -3,39 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Farm;
-use Illuminate\Http\Request;
+use App\Models\Field;
+use App\Models\CropProgress;
 use Illuminate\Support\Facades\Auth;
 
-class FarmController extends Controller
+class FarmerController extends Controller
 {
-    public function index()
+    public function dashboard()
     {
-        $farms = Farm::where('user_id', Auth::id())->get();
+        $userId = Auth::id();
 
-        return view('farms.index', compact('farms'));
-    }
+        $farms = Farm::where('user_id', $userId)->count();
 
-    public function create()
-    {
-        return view('farms.create');
-    }
+        $fields = Field::whereHas('farm', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->count();
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'farm_name' => 'required',
-            'location' => 'required',
-            'total_area' => 'required|numeric',
-        ]);
+        $averageHealth = CropProgress::avg('health_percentage');
 
-        Farm::create([
-            'user_id' => Auth::id(),
-            'farm_name' => $request->farm_name,
-            'location' => $request->location,
-            'total_area' => $request->total_area,
-        ]);
+        $totalYield = CropProgress::sum('predicted_yield');
 
-        return redirect()->route('farms.index')
-            ->with('success', 'Farm Added Successfully');
+        $progresses = CropProgress::latest()->take(5)->get();
+
+        return view('farmer.dashboard', compact(
+            'farms',
+            'fields',
+            'averageHealth',
+            'totalYield',
+            'progresses'
+        ));
     }
 }

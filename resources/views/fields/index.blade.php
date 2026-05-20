@@ -101,7 +101,67 @@
                         </p>
 
                     </div>
+<div class="grid grid-cols-2 gap-4 mt-8">
 
+    <!-- View Progress -->
+    <a href="{{ route('crop-progress.index', $field) }}"
+
+       class="bg-green-600 hover:bg-green-700
+              text-white text-center
+              py-3 rounded-2xl
+              font-semibold transition">
+
+        View Progress
+
+    </a>
+
+    <!-- Add Progress -->
+    <a href="{{ route('crop-progress.create', $field) }}"
+
+       class="bg-blue-600 hover:bg-blue-700
+              text-white text-center
+              py-3 rounded-2xl
+              font-semibold transition">
+
+        Add Progress
+
+    </a>
+
+    <!-- Edit -->
+    <a href="{{ route('fields.edit', $field) }}"
+
+       class="bg-yellow-500 hover:bg-yellow-600
+              text-white text-center
+              py-3 rounded-2xl
+              font-semibold transition">
+
+        Edit
+
+    </a>
+
+    <!-- Delete -->
+    <form action="{{ route('fields.destroy', $field) }}"
+          method="POST">
+
+        @csrf
+        @method('DELETE')
+
+        <button type="submit"
+
+                onclick="return confirm('Delete this field?')"
+
+                class="w-full bg-red-600 hover:bg-red-700
+                       text-white py-3
+                       rounded-2xl font-semibold
+                       transition">
+
+            Delete
+
+        </button>
+
+    </form>
+
+</div>
                 </div>
 
             @endforeach

@@ -47,4 +47,36 @@ class FieldController extends Controller
         return redirect()->route('fields.index')
             ->with('success', 'Field Added Successfully');
     }
+
+    public function edit(Field $field)
+{
+    $farms = Farm::all();
+
+    return view('fields.edit', compact('field', 'farms'));
+}
+
+public function update(Request $request, Field $field)
+{
+    $request->validate([
+        'field_name' => 'required',
+        'field_size' => 'required|numeric',
+        'crop_type' => 'required',
+        'soil_type' => 'required',
+        'irrigation_type' => 'required',
+        'sowing_date' => 'required|date',
+    ]);
+
+    $field->update($request->all());
+
+    return redirect()->route('fields.index')
+        ->with('success', 'Field Updated Successfully');
+}
+
+public function destroy(Field $field)
+{
+    $field->delete();
+
+    return redirect()->route('fields.index')
+        ->with('success', 'Field Deleted Successfully');
+}
 }

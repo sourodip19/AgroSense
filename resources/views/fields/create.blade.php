@@ -77,6 +77,31 @@
                                       px-6 py-5 text-lg">
 
                     </div>
+                    <!-- Field Size -->
+<div>
+
+    <label class="block mb-3
+                  text-lg font-semibold
+                  text-gray-700 dark:text-gray-300">
+
+        Field Size (Acres)
+
+    </label>
+
+    <input type="number"
+           step="0.01"
+           name="field_size"
+
+           class="w-full rounded-2xl
+                  border border-gray-300
+                  dark:border-gray-700
+                  bg-gray-50 dark:bg-[#0d1b2e]
+                  text-gray-800 dark:text-white
+                  px-6 py-5 text-lg"
+
+           placeholder="Enter field size">
+
+</div>
 
                     <!-- Crop -->
                     <div>

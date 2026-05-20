@@ -69,6 +69,7 @@
                                       transition">
 
                     </div>
+                    
 
                     <!-- Location -->
                     <div>

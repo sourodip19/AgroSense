@@ -214,126 +214,207 @@
 
 </div>
         <!-- CHART + INSIGHTS -->
-        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-10">
+       <!-- AI ANALYTICS SECTION -->
+@if($progresses->count())
 
-            <!-- Chart -->
-            <div class="xl:col-span-2
-                        bg-white dark:bg-[#081526]
-                        border border-gray-200 dark:border-gray-800
-                        rounded-3xl p-8 shadow-xl">
+    @php
+        $latest = $progresses->first();
+    @endphp
 
-                <h2 class="text-2xl font-bold
-                           text-gray-800 dark:text-white mb-8">
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-10">
 
-                    Crop Health Analytics
+        <!-- LEFT SIDE -->
+        <div class="xl:col-span-2
+                    bg-white dark:bg-[#081526]
+                    border border-gray-200 dark:border-gray-800
+                    rounded-3xl p-8 shadow-xl">
 
-                </h2>
+            <div class="flex items-center justify-between mb-8">
 
-                <canvas id="healthChart"></canvas>
+                <div>
+
+                    <h2 class="text-3xl font-bold
+                               text-gray-800 dark:text-white">
+
+                        Crop Health Analytics
+
+                    </h2>
+
+                    <p class="text-gray-500 dark:text-gray-400 mt-2">
+
+                        AI-powered crop monitoring insights.
+
+                    </p>
+
+                </div>
+
+                <div class="text-5xl">
+                    🌿
+                </div>
 
             </div>
 
-            <!-- Smart Insights -->
-           <!-- Smart Alerts + AI -->
-<div class="space-y-8">
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-    <!-- Smart Alerts -->
-    <div class="bg-white dark:bg-[#081526]
-                border border-gray-200 dark:border-gray-800
-                rounded-3xl p-8 shadow-xl">
+                <!-- Health -->
+                <div class="bg-gray-50 dark:bg-[#0d1b2e]
+                            rounded-2xl p-6">
 
-        <h2 class="text-2xl font-bold
-                   text-gray-800 dark:text-white mb-6">
+                    <p class="text-gray-500 dark:text-gray-400">
+                        AI Health Score
+                    </p>
 
-            Smart Alerts
+                    <h3 class="text-5xl font-bold
+                               text-green-500 mt-3">
 
-        </h2>
+                        {{ $latest->ai_health_score }}%
 
-        <div class="space-y-4">
+                    </h3>
 
-            @forelse($alerts as $alert)
+                </div>
 
-                <div class="rounded-2xl p-5
+                <!-- Disease -->
+                <div class="bg-gray-50 dark:bg-[#0d1b2e]
+                            rounded-2xl p-6">
 
-                    @if($alert['type'] == 'danger')
-                        bg-red-50 dark:bg-red-900/20
-                        border border-red-200 dark:border-red-800
-                    @elseif($alert['type'] == 'warning')
-                        bg-yellow-50 dark:bg-yellow-900/20
-                        border border-yellow-200 dark:border-yellow-800
-                    @else
-                        bg-green-50 dark:bg-green-900/20
-                        border border-green-200 dark:border-green-800
-                    @endif
-                ">
+                    <p class="text-gray-500 dark:text-gray-400">
+                        Detected Disease
+                    </p>
 
-                    <p class="font-semibold
+                    <h3 class="text-2xl font-bold
+                               text-red-500 mt-3">
 
-                        @if($alert['type'] == 'danger')
-                            text-red-600 dark:text-red-400
-                        @elseif($alert['type'] == 'warning')
-                            text-yellow-600 dark:text-yellow-400
-                        @else
-                            text-green-600 dark:text-green-400
-                        @endif
-                    ">
+                        {{ $latest->ai_disease }}
 
-                        {{ $alert['message'] }}
+                    </h3>
+
+                </div>
+
+                <!-- Risk -->
+                <div class="bg-gray-50 dark:bg-[#0d1b2e]
+                            rounded-2xl p-6">
+
+                    <p class="text-gray-500 dark:text-gray-400">
+                        Risk Level
+                    </p>
+
+                    <h3 class="text-3xl font-bold
+                               text-yellow-500 mt-3">
+
+                        {{ $latest->ai_risk_level }}
+
+                    </h3>
+
+                </div>
+
+                <!-- Yield -->
+                <div class="bg-gray-50 dark:bg-[#0d1b2e]
+                            rounded-2xl p-6">
+
+                    <p class="text-gray-500 dark:text-gray-400">
+                        Predicted Yield
+                    </p>
+
+                    <h3 class="text-3xl font-bold
+                               text-purple-500 mt-3">
+
+                        {{ round($latest->predicted_yield) }}kg
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <!-- Recommendation -->
+            <div class="mt-8
+                        bg-gradient-to-r
+                        from-green-500/10
+                        to-blue-500/10
+                        border border-green-500/20
+                        rounded-3xl p-8">
+
+                <h3 class="text-2xl font-bold
+                           text-white mb-4">
+
+                    🤖 AI Recommendation
+
+                </h3>
+
+                <p class="text-gray-300 text-lg leading-relaxed">
+
+                    {{ $latest->ai_recommendation }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="bg-white dark:bg-[#081526]
+                    border border-gray-200 dark:border-gray-800
+                    rounded-3xl p-8 shadow-xl">
+
+            <h2 class="text-2xl font-bold
+                       text-gray-800 dark:text-white mb-6">
+
+                Uploaded Crop
+
+            </h2>
+
+            @if($latest->crop_image)
+
+                <img
+                    src="{{ asset('storage/' . $latest->crop_image) }}"
+                    class="w-full h-80
+                           object-cover
+                           rounded-3xl
+                           border border-gray-800"
+                >
+
+            @endif
+
+            <div class="mt-6 space-y-4">
+
+                <div class="bg-gray-50 dark:bg-[#0d1b2e]
+                            rounded-2xl p-4">
+
+                    <p class="text-gray-400 text-sm">
+                        Crop Condition
+                    </p>
+
+                    <p class="text-white font-bold text-lg mt-1">
+
+                        {{ $latest->crop_condition }}
 
                     </p>
 
                 </div>
 
-            @empty
+                <div class="bg-gray-50 dark:bg-[#0d1b2e]
+                            rounded-2xl p-4">
 
-                <div class="bg-green-50 dark:bg-green-900/20
-                            border border-green-200 dark:border-green-800
-                            rounded-2xl p-5">
+                    <p class="text-gray-400 text-sm">
+                        Visible Issue
+                    </p>
 
-                    <p class="text-green-600 dark:text-green-400
-                              font-semibold">
+                    <p class="text-white font-bold text-lg mt-1">
 
-                        ✅ All agricultural conditions are stable.
+                        {{ $latest->visible_issue }}
 
                     </p>
 
                 </div>
 
-            @endforelse
+            </div>
 
         </div>
 
     </div>
 
-    <!-- AI Crop Advisor -->
-    <div class="bg-white dark:bg-[#081526]
-                border border-gray-200 dark:border-gray-800
-                rounded-3xl p-8 shadow-xl">
-
-        <h2 class="text-2xl font-bold
-                   text-gray-800 dark:text-white mb-6">
-
-            🤖 AI Crop Advisor
-
-        </h2>
-
-        <div class="bg-gray-50 dark:bg-[#0d1b2e]
-                    rounded-2xl p-6">
-
-            <p class="text-gray-700 dark:text-gray-300
-                      leading-8 whitespace-pre-line">
-
-                {{ $aiAdvice }}
-
-            </p>
-
-        </div>
-
-    </div>
-
-</div>
-
-        </div>
+@endif
 
         <!-- RECENT PROGRESS -->
         <div class="bg-white dark:bg-[#081526]

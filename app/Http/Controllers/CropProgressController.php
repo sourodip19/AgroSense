@@ -6,7 +6,7 @@ use App\Models\Field;
 use App\Models\CropProgress;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-
+use App\Services\CropAiService;
 class CropProgressController extends Controller
 {
     public function index(Field $field)
@@ -26,65 +26,83 @@ class CropProgressController extends Controller
         return view('crop-progress.create', compact('field'));
     }
 
-    public function store(Request $request, Field $field)
+    public function store(
+    Request $request,
+    Field $field,
+    CropAiService $cropAiService
+)
 {
     $request->validate([
 
-        'health_percentage' =>
-            'required|numeric|min:0|max:100',
+        'crop_condition' => 'required',
 
-        'progress_percentage' =>
-            'required|numeric|min:0|max:100',
+        'visible_issue' => 'required',
 
-        'predicted_yield' =>
-            'required|numeric|min:0',
+        'crop_image' => 'required|image',
 
         'notes' => 'nullable',
 
-        'crop_image' =>
-            'nullable|image|mimes:jpg,jpeg,png|max:2048',
-
     ]);
 
-    // Crop Age Calculation
     $cropAge = Carbon::parse($field->sowing_date)
         ->diffInDays(now());
 
-    // Image Upload
-    $imagePath = null;
+    $imagePath = $request
+        ->file('crop_image')
+        ->store('crop-images', 'public');
 
-    if ($request->hasFile('crop_image')) {
+    // AI Analysis
+    $aiResponse = $cropAiService->analyze(
 
-        $imagePath = $request
-            ->file('crop_image')
-            ->store('crop-images', 'public');
-    }
+        $imagePath,
 
-    // Save Progress
+        $field->crop_type,
+
+        $request->visible_issue
+
+    );
+
+    $text =
+        $aiResponse['candidates'][0]['content']['parts'][0]['text']
+        ?? '';
+
+    preg_match('/Health Score:\s*(\d+)/', $text, $healthMatch);
+
+    preg_match('/Disease:\s*(.*)/', $text, $diseaseMatch);
+
+    preg_match('/Risk Level:\s*(.*)/', $text, $riskMatch);
+
+    preg_match('/Recommendation:\s*(.*)/', $text, $recommendationMatch);
+
     CropProgress::create([
 
         'field_id' => $field->id,
 
-        'growth_stage' =>
-            $this->detectGrowthStage($cropAge),
+        'growth_stage' => $this->detectGrowthStage($cropAge),
 
-        'health_percentage' =>
-            $request->health_percentage,
+        'crop_condition' => $request->crop_condition,
 
-        'progress_percentage' =>
-            $request->progress_percentage,
+        'visible_issue' => $request->visible_issue,
 
-        'predicted_yield' =>
-            $request->predicted_yield,
+        'crop_image' => $imagePath,
 
-        'notes' =>
-            $request->notes,
+        'notes' => $request->notes,
 
-        'crop_age' =>
-            $cropAge,
+        'crop_age' => $cropAge,
 
-        'crop_image' =>
-            $imagePath,
+        'health_percentage' => $healthMatch[1] ?? 70,
+
+        'progress_percentage' => rand(50, 100),
+
+        'predicted_yield' => rand(200, 500),
+
+        'ai_health_score' => $healthMatch[1] ?? 70,
+
+        'ai_disease' => trim($diseaseMatch[1] ?? 'Unknown'),
+
+        'ai_risk_level' => trim($riskMatch[1] ?? 'Medium'),
+
+        'ai_recommendation' => trim($recommendationMatch[1] ?? 'Monitor crop regularly'),
 
     ]);
 

@@ -182,13 +182,17 @@
                     <!-- Buttons -->
                     <div class="flex gap-4">
 
-                        <a href="#"
+                        <a href="{{ route('crop-progress.index', $field) }}"
 
-                           class="flex-1 bg-green-600
-                                  hover:bg-green-700
-                                  text-white text-center
-                                  py-3 rounded-2xl
-                                  font-semibold">
+   class="flex-1 text-center
+          bg-green-600 hover:bg-green-700
+          text-white font-bold
+          py-4 rounded-2xl
+          transition">
+
+    View Progress
+
+</a>
 
                             View Progress
 

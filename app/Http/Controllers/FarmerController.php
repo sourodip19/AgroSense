@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Services\AiRecommendationService;
 
 use App\Models\Farm;
 use App\Models\Field;
@@ -10,7 +11,12 @@ use App\Services\WeatherService;
 use Illuminate\Http\Request;
 class FarmerController extends Controller
 {
-    public function dashboard(WeatherService $weatherService)
+    public function dashboard(
+
+    WeatherService $weatherService,
+    AiRecommendationService $aiService
+
+)
     {
         $userId = Auth::id();
 
@@ -41,13 +47,38 @@ $lon = session('lon', 88.4907);
 
 $weather = $weatherService->getWeather($lat, $lon);
 
+$latestProgress = CropProgress::latest()->first();
+
+$aiAdvice = null;
+
+if ($latestProgress) {
+
+    $field = $latestProgress->field;
+
+    $aiAdvice = $aiService->generate([
+
+        'crop' => $field->crop_type,
+
+        'health' => $latestProgress->health_percentage,
+
+        'temperature' => $weather['main']['temp'],
+
+        'humidity' => $weather['main']['humidity'],
+
+        'stage' => $latestProgress->growth_stage,
+
+        'yield' => $latestProgress->predicted_yield,
+
+    ]);
+}
         return view('farmer.dashboard', compact(
             'farms',
             'fields',
             'averageHealth',
             'totalYield',
             'progresses',
-            'weather'
+            'weather',
+            'aiAdvice'
         ));
     }
     public function weatherUpdate(Request $request)

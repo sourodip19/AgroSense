@@ -100,6 +100,99 @@
             </div>
 
         </div>
+        <!-- AI Crop Search -->
+<div class="bg-white dark:bg-[#081526]
+            border border-gray-200 dark:border-gray-800
+            rounded-3xl p-8 shadow-xl mb-10">
+
+    <div class="flex items-center justify-between mb-6">
+
+        <div>
+
+            <h2 class="text-3xl font-bold
+                       text-gray-800 dark:text-white">
+
+                🌾 AI Farming Assistant
+
+            </h2>
+
+            <p class="text-gray-500 dark:text-gray-400 mt-2">
+
+                Search crops in your local language.
+
+            </p>
+
+        </div>
+
+        <div class="text-5xl">
+            🤖
+        </div>
+
+    </div>
+
+    <!-- Search Form -->
+    <form action="{{ route('ai.crop.search') }}"
+          method="POST"
+          class="flex gap-4">
+
+        @csrf
+
+        <input
+            type="text"
+            name="crop_name"
+
+            placeholder="Type crop name like gehu, dhaan, alu..."
+
+            class="flex-1 rounded-2xl
+                   border border-gray-300
+                   dark:border-gray-700
+                   bg-gray-50 dark:bg-[#0d1b2e]
+                   text-gray-800 dark:text-white
+                   px-6 py-5 text-lg"
+        >
+
+        <button type="submit"
+
+                class="bg-green-600 hover:bg-green-700
+                       text-white font-bold
+                       px-8 rounded-2xl
+                       transition">
+
+            Search
+
+        </button>
+
+    </form>
+
+    <!-- AI Result -->
+    @if(session('crop_ai_result'))
+
+        <div class="mt-8
+                    bg-[#0d1b2e]
+                    border border-gray-800
+                    rounded-3xl p-8">
+
+            <h3 class="text-2xl font-bold
+                       text-green-400 mb-6">
+
+                🌱 AI Farming Guide
+
+            </h3>
+
+            <div class="text-gray-300
+                        leading-loose
+                        whitespace-pre-line
+                        text-lg">
+
+                {{ session('crop_ai_result') }}
+
+            </div>
+
+        </div>
+
+    @endif
+
+</div>
 <!-- WEATHER SECTION -->
 <div class="bg-white dark:bg-[#081526]
             border border-gray-200 dark:border-gray-800

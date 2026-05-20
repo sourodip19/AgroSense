@@ -53,6 +53,14 @@ Route::post('/fields/{field}/progress',
     Route::get('/weather-update',
 
     [FarmerController::class, 'weatherUpdate']);
+
+    Route::post(
+
+    '/ai-crop-search',
+
+    [FarmerController::class, 'cropSearch']
+
+)->name('ai.crop.search');
 });
 
 Route::get('/dashboard', function () {

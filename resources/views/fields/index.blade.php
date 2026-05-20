@@ -51,12 +51,23 @@
                                 {{ $field->field_name }}
 
                             </h2>
+                            
 
                             <p class="text-gray-500 dark:text-gray-400">
 
                                 🌾 {{ $field->crop_type }}
 
                             </p>
+                            <p class="text-gray-400 mb-3">
+
+    📏 Field Size:
+    <span class="text-white font-semibold">
+
+        {{ $field->field_size }} acres
+
+    </span>
+
+</p>
 
                         </div>
 

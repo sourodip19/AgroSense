@@ -16,8 +16,9 @@
                         rounded-3xl shadow-2xl p-10">
 
                 <form action="{{ route('crop-progress.store') }}"
-                      method="POST"
-                      class="space-y-8">
+      method="POST"
+      enctype="multipart/form-data"
+      class="space-y-8">
 
                     @csrf
 
@@ -195,7 +196,31 @@
                                          px-6 py-5 text-lg"></textarea>
 
                     </div>
+<!-- Crop Image -->
+<div>
 
+    <label class="block mb-3
+                  text-lg font-semibold
+                  text-gray-700 dark:text-gray-300">
+
+        Crop Image
+
+    </label>
+
+    <input
+        type="file"
+        name="crop_image"
+        accept="image/*"
+
+        class="w-full rounded-2xl
+               border border-gray-300
+               dark:border-gray-700
+               bg-gray-50 dark:bg-[#0d1b2e]
+               text-gray-800 dark:text-white
+               px-6 py-5 text-lg"
+    >
+
+</div>
                     <!-- Submit -->
                     <button type="submit"
 

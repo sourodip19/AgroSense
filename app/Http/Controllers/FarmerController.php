@@ -1,76 +1,193 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Services\AiRecommendationService;
 
 use App\Models\Farm;
 use App\Models\Field;
 use App\Models\CropProgress;
-use Illuminate\Support\Facades\Auth;
-use App\Services\WeatherService;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use App\Services\WeatherService;
+use App\Services\AiRecommendationService;
+
 class FarmerController extends Controller
 {
     public function dashboard(
-
-    WeatherService $weatherService,
-    AiRecommendationService $aiService
-
-)
+        WeatherService $weatherService,
+        AiRecommendationService $aiService
+    )
     {
         $userId = Auth::id();
 
-        // Farms Count
+        /*
+        |--------------------------------------------------------------------------
+        | Dashboard Analytics
+        |--------------------------------------------------------------------------
+        */
+
+        // Total Farms
         $farms = Farm::where('user_id', $userId)->count();
 
-        // Fields Count
+        // Total Fields
         $fields = Field::whereHas('farm', function ($query) use ($userId) {
 
             $query->where('user_id', $userId);
 
         })->count();
 
-        // Average Health
+        // Average Crop Health
         $averageHealth = CropProgress::avg('health_percentage');
 
-        // Total Yield
+        // Total Predicted Yield
         $totalYield = CropProgress::sum('predicted_yield');
 
-        // Recent Progress
+        // Recent Crop Progress
         $progresses = CropProgress::latest()
             ->take(5)
             ->get();
 
-        // Weather API
+        /*
+        |--------------------------------------------------------------------------
+        | Weather System
+        |--------------------------------------------------------------------------
+        */
+
+        // Default fallback coordinates
         $lat = session('lat', 23.4050);
-$lon = session('lon', 88.4907);
+        $lon = session('lon', 88.4907);
 
-$weather = $weatherService->getWeather($lat, $lon);
+        // Live weather
+        $weather = $weatherService->getWeather($lat, $lon);
 
-$latestProgress = CropProgress::latest()->first();
+        /*
+        |--------------------------------------------------------------------------
+        | Smart Agricultural Alerts
+        |--------------------------------------------------------------------------
+        */
 
-$aiAdvice = null;
+        $alerts = [];
 
-if ($latestProgress) {
+        // Critical Crop Health
+        $criticalFields = CropProgress::where(
+            'health_percentage',
+            '<',
+            40
+        )->count();
 
-    $field = $latestProgress->field;
+        if ($criticalFields > 0) {
 
-    $aiAdvice = $aiService->generate([
+            $alerts[] = [
 
-        'crop' => $field->crop_type,
+                'type' => 'danger',
 
-        'health' => $latestProgress->health_percentage,
+                'message' =>
+                    'Critical crop health detected in some fields.'
 
-        'temperature' => $weather['main']['temp'],
+            ];
+        }
 
-        'humidity' => $weather['main']['humidity'],
+        // Moderate Warning
+        $warningFields = CropProgress::whereBetween(
+            'health_percentage',
+            [40, 70]
+        )->count();
 
-        'stage' => $latestProgress->growth_stage,
+        if ($warningFields > 0) {
 
-        'yield' => $latestProgress->predicted_yield,
+            $alerts[] = [
 
-    ]);
-}
+                'type' => 'warning',
+
+                'message' =>
+                    'Some crops require monitoring attention.'
+
+            ];
+        }
+
+        // Harvest Ready
+        $harvestReady = CropProgress::where(
+            'crop_age',
+            '>',
+            90
+        )->count();
+
+        if ($harvestReady > 0) {
+
+            $alerts[] = [
+
+                'type' => 'success',
+
+                'message' =>
+                    'Some crops are ready for harvesting.'
+
+            ];
+        }
+
+        // High Temperature Alert
+        if (($weather['main']['temp'] ?? 0) > 35) {
+
+            $alerts[] = [
+
+                'type' => 'danger',
+
+                'message' =>
+                    'Extreme temperature detected. Irrigation recommended.'
+
+            ];
+        }
+
+        // Low Humidity Alert
+        if (($weather['main']['humidity'] ?? 0) < 30) {
+
+            $alerts[] = [
+
+                'type' => 'warning',
+
+                'message' =>
+                    'Low humidity detected. Monitor soil moisture.'
+
+            ];
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | AI Crop Advisor
+        |--------------------------------------------------------------------------
+        */
+
+        $latestProgress = CropProgress::latest()->first();
+
+        $aiAdvice = null;
+
+        if ($latestProgress) {
+
+            $field = $latestProgress->field;
+
+            $aiAdvice = $aiService->generate([
+
+                'crop' => $field->crop_type,
+
+                'health' => $latestProgress->health_percentage,
+
+                'temperature' => $weather['main']['temp'] ?? 0,
+
+                'humidity' => $weather['main']['humidity'] ?? 0,
+
+                'stage' => $latestProgress->growth_stage,
+
+                'yield' => $latestProgress->predicted_yield,
+
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Return Dashboard View
+        |--------------------------------------------------------------------------
+        */
+
         return view('farmer.dashboard', compact(
             'farms',
             'fields',
@@ -78,20 +195,28 @@ if ($latestProgress) {
             'totalYield',
             'progresses',
             'weather',
+            'alerts',
             'aiAdvice'
         ));
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Weather Geolocation Session Update
+    |--------------------------------------------------------------------------
+    */
+
     public function weatherUpdate(Request $request)
-{
-    session([
+    {
+        session([
 
-        'lat' => $request->lat,
-        'lon' => $request->lon,
+            'lat' => $request->lat,
+            'lon' => $request->lon,
 
-    ]);
+        ]);
 
-    return response()->json([
-        'success' => true
-    ]);
-}
+        return response()->json([
+            'success' => true
+        ]);
+    }
 }

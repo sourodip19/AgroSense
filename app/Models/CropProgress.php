@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CropProgress extends Model
 {
+    protected $table = 'crop_progresses';
     protected $fillable = [
         'field_id',
         'growth_stage',

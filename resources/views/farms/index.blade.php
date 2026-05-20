@@ -195,7 +195,7 @@
                         <!-- Buttons -->
                         <div class="flex gap-4">
 
-                            <a href="#"
+                           <a href="{{ route('farms.show', $farm) }}"
 
                                class="flex-1 text-center
                                       bg-green-600 hover:bg-green-700
@@ -206,8 +206,7 @@
 
                             </a>
 
-                            <a href="#"
-
+                            <a href="{{ route('farms.edit', $farm) }}"
                                class="flex-1 text-center
                                       bg-gray-100 dark:bg-[#11233d]
                                       hover:bg-gray-200

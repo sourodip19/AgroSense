@@ -100,7 +100,110 @@
             </div>
 
         </div>
+<!-- WEATHER SECTION -->
+<div class="bg-white dark:bg-[#081526]
+            border border-gray-200 dark:border-gray-800
+            rounded-3xl p-8 shadow-xl mb-10">
 
+    <div class="flex items-center justify-between mb-8">
+
+        <div>
+
+            <h2 class="text-3xl font-bold
+                       text-gray-800 dark:text-white">
+
+                Live Weather Monitoring
+
+            </h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-1">
+
+    {{ now()->format('d M Y • h:i A') }}
+
+</p>
+
+            <p class="text-gray-500 dark:text-gray-400 mt-2">
+
+                Real-time environmental conditions.
+
+            </p>
+
+        </div>
+
+        <div class="text-6xl">
+            ☁️
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+        <!-- Temperature -->
+        <div class="bg-gray-50 dark:bg-[#0d1b2e]
+                    rounded-2xl p-6">
+
+            <p class="text-gray-500 dark:text-gray-400 mb-2">
+                Temperature
+            </p>
+
+            <h3 class="text-4xl font-bold text-red-500">
+
+                {{ round($weather['main']['temp'] ?? 0) }}°C
+
+            </h3>
+
+        </div>
+
+        <!-- Humidity -->
+        <div class="bg-gray-50 dark:bg-[#0d1b2e]
+                    rounded-2xl p-6">
+
+            <p class="text-gray-500 dark:text-gray-400 mb-2">
+                Humidity
+            </p>
+
+            <h3 class="text-4xl font-bold text-blue-500">
+
+                {{ $weather['main']['humidity'] ?? 0 }}%
+
+            </h3>
+
+        </div>
+
+        <!-- Wind -->
+        <div class="bg-gray-50 dark:bg-[#0d1b2e]
+                    rounded-2xl p-6">
+
+            <p class="text-gray-500 dark:text-gray-400 mb-2">
+                Wind Speed
+            </p>
+
+            <h3 class="text-4xl font-bold text-green-500">
+
+                {{ $weather['wind']['speed'] ?? 0 }}
+
+            </h3>
+
+        </div>
+
+        <!-- Condition -->
+        <div class="bg-gray-50 dark:bg-[#0d1b2e]
+                    rounded-2xl p-6">
+
+            <p class="text-gray-500 dark:text-gray-400 mb-2">
+                Condition
+            </p>
+
+            <h3 class="text-2xl font-bold text-yellow-500">
+
+                {{ $weather['weather'][0]['main'] ?? 'N/A' }}
+
+            </h3>
+
+        </div>
+
+    </div>
+
+</div>
         <!-- CHART + INSIGHTS -->
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-10">
 

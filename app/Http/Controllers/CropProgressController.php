@@ -6,77 +6,85 @@ use App\Models\Field;
 use App\Models\CropProgress;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+
 class CropProgressController extends Controller
 {
-    public function index()
+    public function index(Field $field)
     {
-        $progresses = CropProgress::with('field')->latest()->get();
+        $progresses = CropProgress::where('field_id', $field->id)
+            ->latest()
+            ->get();
 
-        return view('crop-progress.index', compact('progresses'));
+        return view('crop-progress.index', compact(
+            'field',
+            'progresses'
+        ));
     }
 
-    public function create()
+    public function create(Field $field)
     {
-        $fields = Field::all();
-
-        return view('crop-progress.create', compact('fields'));
+        return view('crop-progress.create', compact('field'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Field $field)
     {
         $request->validate([
-            'field_id' => 'required',
-            'growth_stage' => 'required',
+
             'health_percentage' => 'required|numeric|min:0|max:100',
+
             'progress_percentage' => 'required|numeric|min:0|max:100',
-            'predicted_yield' => 'required|numeric',
+
+            'predicted_yield' => 'required|numeric|min:0',
+
+            'notes' => 'nullable',
+
         ]);
 
-        $field = Field::findOrFail($request->field_id);
+        $cropAge = Carbon::parse($field->sowing_date)
+            ->diffInDays(now());
 
-$cropAge = Carbon::parse($field->sowing_date)
-    ->diffInDays(now());
+        CropProgress::create([
 
-CropProgress::create([
+            'field_id' => $field->id,
 
-    'field_id' => $request->field_id,
+            'growth_stage' => $this->detectGrowthStage($cropAge),
 
-   'growth_stage' => $this->detectGrowthStage($cropAge),
+            'health_percentage' => $request->health_percentage,
 
-    'health_percentage' => $request->health_percentage,
+            'progress_percentage' => $request->progress_percentage,
 
-    'progress_percentage' => $request->progress_percentage,
+            'predicted_yield' => $request->predicted_yield,
 
-    'predicted_yield' => $request->predicted_yield,
+            'notes' => $request->notes,
 
-    'notes' => $request->notes,
+            'crop_age' => $cropAge,
 
-    'crop_age' => $cropAge,
+        ]);
 
-]);
-
-        return redirect()->route('crop-progress.index')
-            ->with('success', 'Crop Progress Added');
+        return redirect()->route(
+            'crop-progress.index',
+            $field
+        );
     }
 
     private function detectGrowthStage($cropAge)
-{
-    if ($cropAge <= 10) {
-        return 'Germination';
-    }
+    {
+        if ($cropAge <= 10) {
+            return 'Germination';
+        }
 
-    if ($cropAge <= 30) {
-        return 'Vegetative';
-    }
+        if ($cropAge <= 30) {
+            return 'Vegetative';
+        }
 
-    if ($cropAge <= 60) {
-        return 'Flowering';
-    }
+        if ($cropAge <= 60) {
+            return 'Flowering';
+        }
 
-    if ($cropAge <= 90) {
-        return 'Fruiting';
-    }
+        if ($cropAge <= 90) {
+            return 'Fruiting';
+        }
 
-    return 'Harvest';
-}
+        return 'Harvest';
+    }
 }

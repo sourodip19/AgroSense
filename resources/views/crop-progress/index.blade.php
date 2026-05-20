@@ -8,203 +8,166 @@
             <div>
 
                 <h1 class="text-5xl font-bold
-                    text-gray-800 dark:text-white">
+                           text-white">
 
-                    Crop Progress
+                    {{ $field->field_name }}
 
                 </h1>
 
-                <p class="text-gray-500 dark:text-gray-400 mt-2">
+                <p class="text-gray-400 mt-3 text-lg">
 
-                    Monitor real-time crop progression analytics.
+                    Crop Progress Intelligence Center
 
                 </p>
 
             </div>
 
-            <a href="{{ route('crop-progress.create') }}"
+            <a href="{{ route('crop-progress.create', $field) }}"
 
-            class="bg-green-600 hover:bg-green-700
-                    text-white px-6 py-4 rounded-2xl font-semibold transition">
+               class="bg-green-600 hover:bg-green-700
+                      text-white px-8 py-4
+                      rounded-2xl font-bold
+                      transition hover:scale-105">
 
-                ➕ Add Progress
+                + Add Progress
 
             </a>
 
         </div>
 
-        <!-- Cards -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Timeline -->
+        <div class="space-y-8">
 
-            @foreach($progresses as $progress)
+            @forelse($progresses as $progress)
 
-                <div class="bg-white dark:bg-[#081526]
-                            border border-gray-200 dark:border-gray-800
+                <div class="bg-[#081526]
+                            border border-gray-800
                             rounded-3xl p-8 shadow-xl">
 
                     <!-- Top -->
-                    <div class="flex items-start justify-between mb-6">
+                    <div class="flex items-center
+                                justify-between mb-6">
 
                         <div>
 
                             <h2 class="text-3xl font-bold
-                                    text-gray-800 dark:text-white">
+                                       text-white">
 
-                                {{ $progress->field->field_name }}
+                                {{ $progress->growth_stage }}
 
                             </h2>
 
-                            <p class="text-gray-500 dark:text-gray-400">
+                            <p class="text-gray-400 mt-2">
 
-                                🌾 {{ $progress->field->crop_type }}
+                                {{ $progress->created_at
+                                    ->format('d M Y • h:i A') }}
 
                             </p>
 
                         </div>
 
-                        <div class="bg-green-100 dark:bg-green-900/30
-                                    text-green-700 dark:text-green-400
-                                    px-4 py-2 rounded-xl text-sm font-semibold">
+                        <div class="bg-green-900/30
+                                    text-green-400
+                                    px-5 py-3 rounded-2xl
+                                    font-semibold">
 
-                            {{ $progress->growth_stage }}
+                            {{ $progress->crop_age }} Days
 
                         </div>
 
                     </div>
 
-                    <!-- Health -->
-                    <div class="mb-6">
+                    <!-- Stats -->
+                    <div class="grid grid-cols-1
+                                md:grid-cols-3 gap-6 mb-8">
 
-                        <div class="flex justify-between mb-2">
+                        <!-- Health -->
+                        <div class="bg-[#0d1b2e]
+                                    rounded-2xl p-6">
 
-                            <span class="text-gray-500 dark:text-gray-400">
-                                Crop Health
-                            </span>
+                            <p class="text-gray-400 mb-3">
+                                Health
+                            </p>
 
-                            <span class="font-bold text-green-500">
+                            <h3 class="text-4xl font-bold
+                                       text-green-500">
+
                                 {{ $progress->health_percentage }}%
 
-@if($progress->health_percentage >= 80)
-
-    <span class="text-green-500 text-sm ml-2">
-        Excellent
-    </span>
-
-@elseif($progress->health_percentage >= 60)
-
-    <span class="text-blue-500 text-sm ml-2">
-        Good
-    </span>
-
-@elseif($progress->health_percentage >= 40)
-
-    <span class="text-yellow-500 text-sm ml-2">
-        Average
-    </span>
-
-@else
-
-    <span class="text-red-500 text-sm ml-2">
-        Critical
-    </span>
-
-@endif
-                            </span>
+                            </h3>
 
                         </div>
 
-                        <div class="w-full h-4 rounded-full
-                                    bg-gray-200 dark:bg-gray-700">
+                        <!-- Progress -->
+                        <div class="bg-[#0d1b2e]
+                                    rounded-2xl p-6">
 
-                            <div class="h-4 rounded-full bg-green-500"style="width: {{ $progress->health_percentage }}%">
+                            <p class="text-gray-400 mb-3">
+                                Growth
+                            </p>
 
-                            </div>
+                            <h3 class="text-4xl font-bold
+                                       text-blue-500">
 
-                        </div>
-
-                    </div>
-
-                    <!-- Progress -->
-                    <div class="mb-6">
-
-                        <div class="flex justify-between mb-2">
-
-                            <span class="text-gray-500 dark:text-gray-400">
-                                Growth Progress
-                            </span>
-
-                            <span class="font-bold text-blue-500">
                                 {{ $progress->progress_percentage }}%
-                            </span>
+
+                            </h3>
 
                         </div>
 
-                        <div class="w-full h-4 rounded-full
-                                    bg-gray-200 dark:bg-gray-700">
+                        <!-- Yield -->
+                        <div class="bg-[#0d1b2e]
+                                    rounded-2xl p-6">
 
-                            <div class="h-4 rounded-full bg-blue-500"style="width: {{ $progress->progress_percentage }}%">
+                            <p class="text-gray-400 mb-3">
+                                Predicted Yield
+                            </p>
 
-                            </div>
+                            <h3 class="text-4xl font-bold
+                                       text-yellow-500">
+
+                                {{ $progress->predicted_yield }}kg
+
+                            </h3>
 
                         </div>
 
                     </div>
-
-                    <!-- Yield -->
-                    <div class="mb-6">
-
-                        <p class="text-gray-500 dark:text-gray-400 mb-2">
-                            Predicted Yield
-                        </p>
-
-                        <h3 class="text-4xl font-bold
-                                text-gray-800 dark:text-white">
-
-                            {{ $progress->predicted_yield }}
-
-                            <span class="text-lg">
-                                kg
-                            </span>
-
-                        </h3>
-
-                    </div>
-
-                    <!-- Crop Age -->
-<div class="mb-6">
-
-    <p class="text-gray-500 dark:text-gray-400 mb-2">
-        Crop Age
-    </p>
-
-    <h3 class="text-3xl font-bold
-               text-gray-800 dark:text-white">
-
-        {{ $progress->crop_age }}
-
-        <span class="text-lg">
-            days
-        </span>
-
-    </h3>
-
-</div>
 
                     <!-- Notes -->
-                    <div class="bg-gray-50 dark:bg-[#0d1b2e]
-                                rounded-2xl p-4">
+                    @if($progress->notes)
 
-                        <p class="text-gray-600 dark:text-gray-300">
+                        <div class="bg-[#0d1b2e]
+                                    rounded-2xl p-6">
 
-                            {{ $progress->notes ?? 'No additional notes.' }}
+                            <p class="text-gray-300 leading-relaxed">
 
-                        </p>
+                                {{ $progress->notes }}
 
-                    </div>
+                            </p>
+
+                        </div>
+
+                    @endif
 
                 </div>
 
-            @endforeach
+            @empty
+
+                <div class="bg-yellow-900/20
+                            border border-yellow-700
+                            rounded-3xl p-10 text-center">
+
+                    <p class="text-yellow-400
+                              text-2xl font-semibold">
+
+                        No crop progress added yet.
+
+                    </p>
+
+                </div>
+
+            @endforelse
 
         </div>
 

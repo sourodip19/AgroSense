@@ -7,7 +7,7 @@ use App\Models\Field;
 use App\Models\CropProgress;
 use Illuminate\Support\Facades\Auth;
 use App\Services\WeatherService;
-
+use Illuminate\Http\Request;
 class FarmerController extends Controller
 {
     public function dashboard(WeatherService $weatherService)
@@ -36,7 +36,10 @@ class FarmerController extends Controller
             ->get();
 
         // Weather API
-        $weather = $weatherService->getWeather();
+        $lat = session('lat', 23.4050);
+$lon = session('lon', 88.4907);
+
+$weather = $weatherService->getWeather($lat, $lon);
 
         return view('farmer.dashboard', compact(
             'farms',
@@ -47,4 +50,17 @@ class FarmerController extends Controller
             'weather'
         ));
     }
+    public function weatherUpdate(Request $request)
+{
+    session([
+
+        'lat' => $request->lat,
+        'lon' => $request->lon,
+
+    ]);
+
+    return response()->json([
+        'success' => true
+    ]);
+}
 }

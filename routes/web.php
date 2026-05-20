@@ -30,7 +30,29 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('fields', FieldController::class);
 
+    Route::get('/fields/{field}/progress',
+
+    [CropProgressController::class, 'index'])
+
+    ->name('crop-progress.index');
+
+Route::get('/fields/{field}/progress/create',
+
+    [CropProgressController::class, 'create'])
+
+    ->name('crop-progress.create');
+
+Route::post('/fields/{field}/progress',
+
+    [CropProgressController::class, 'store'])
+
+    ->name('crop-progress.store');
+
     Route::resource('crop-progress', CropProgressController::class);
+
+    Route::get('/weather-update',
+
+    [FarmerController::class, 'weatherUpdate']);
 });
 
 Route::get('/dashboard', function () {

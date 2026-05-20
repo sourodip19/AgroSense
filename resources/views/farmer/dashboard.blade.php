@@ -115,12 +115,21 @@
                 Live Weather Monitoring
 
             </h2>
-            <p class="text-gray-500 dark:text-gray-400 mt-1">
+           <div class="space-y-2">
 
-    {{ now()->format('d M Y • h:i A') }}
+    <p class="text-gray-400 text-lg">
 
-</p>
+        {{ now()->format('d M Y • h:i A') }}
 
+    </p>
+
+    <p class="text-green-400 font-semibold text-lg">
+
+        📍 {{ $weather['name'] }}
+
+    </p>
+
+</div>
             <p class="text-gray-500 dark:text-gray-400 mt-2">
 
                 Real-time environmental conditions.
@@ -403,5 +412,39 @@
         });
 
     </script>
+<script>
 
+window.addEventListener('load', () => {
+
+    if (!sessionStorage.getItem('geo_loaded')) {
+
+        navigator.geolocation.getCurrentPosition(
+
+            async (position) => {
+
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                await fetch(
+
+                    `/weather-update?lat=${lat}&lon=${lon}`
+
+                );
+
+                sessionStorage.setItem(
+                    'geo_loaded',
+                    'true'
+                );
+
+                location.reload();
+
+            }
+
+        );
+
+    }
+
+});
+
+</script>
 </x-app-layout>

@@ -69,7 +69,7 @@
                                       transition">
 
                     </div>
-                    
+
 
                     <!-- Location -->
                     <div>
@@ -84,6 +84,7 @@
 
                         <input type="text"
                                name="location"
+                               id="location"
                                placeholder="Enter farm location"
 
                                class="w-full rounded-2xl
@@ -174,5 +175,59 @@
         </div>
 
     </div>
+<script>
 
+window.addEventListener('load', () => {
+
+    if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(
+
+            async (position) => {
+
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                console.log(lat, lon);
+
+                try {
+
+                    const response = await fetch(
+
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+
+                    );
+
+                    const data = await response.json();
+
+                    console.log(data);
+
+                    document.getElementById('location').value =
+                        data.display_name;
+
+                }
+
+                catch(error) {
+
+                    console.log(error);
+
+                }
+
+            },
+
+            (error) => {
+
+                console.log(error);
+
+                alert('Location permission denied.');
+
+            }
+
+        );
+
+    }
+
+});
+
+</script>
 </x-app-layout>

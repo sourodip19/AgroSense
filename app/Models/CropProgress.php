@@ -15,7 +15,14 @@ class CropProgress extends Model
         'predicted_yield',
         'notes',
         'crop_age',
-        'crop_image'
+        'crop_image',
+        'ai_health_score',
+'ai_disease',
+'ai_recommendation',
+'ai_risk_level',
+'crop_condition',
+'visible_issue',
+'crop_image',
     ];
 
     public function field()

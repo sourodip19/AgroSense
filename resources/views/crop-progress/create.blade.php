@@ -2,175 +2,185 @@
 
     <div class="p-8">
 
-        <div class="max-w-4xl mx-auto">
+        <div class="max-w-5xl mx-auto">
 
-            <h1 class="text-5xl font-bold
-                       text-gray-800 dark:text-white mb-10">
+            <!-- Header -->
+            <div class="mb-10">
 
-                Add Crop Progress
+                <h1 class="text-5xl font-bold
+                           text-white mb-4">
 
-            </h1>
+                    🌿 Crop Health Update
 
-            <div class="bg-white dark:bg-[#081526]
-                        border border-gray-200 dark:border-gray-800
-                        rounded-3xl shadow-2xl p-10">
+                </h1>
 
-               <form action="{{ route('crop-progress.store', $field) }}"
-      method="POST"
-      enctype="multipart/form-data"
-      class="space-y-8">
+                <p class="text-gray-400 text-xl">
+
+                    Upload crop condition and let AgroSense AI
+                    analyze your field automatically.
+
+                </p>
+
+            </div>
+
+            <!-- Main Card -->
+            <div class="bg-[#081526]
+                        border border-gray-800
+                        rounded-3xl shadow-2xl
+                        p-10">
+
+                <form action="{{ route('crop-progress.store', $field) }}"
+                      method="POST"
+                      enctype="multipart/form-data"
+                      class="space-y-8">
 
                     @csrf
 
-                    <!-- Field -->
+                    <!-- Selected Field -->
+                    <div class="bg-green-900/20
+                                border border-green-800
+                                rounded-2xl p-6">
+
+                        <h2 class="text-2xl font-bold
+                                   text-green-400">
+
+                            🌾 Field:
+                            {{ $field->field_name }}
+
+                        </h2>
+
+                        <p class="text-gray-400 mt-2">
+
+                            Crop:
+                            {{ $field->crop_type }}
+
+                        </p>
+
+                    </div>
+
+                    <!-- Crop Condition -->
                     <div>
 
                         <label class="block mb-3
                                       text-lg font-semibold
-                                      text-gray-700 dark:text-gray-300">
+                                      text-white">
 
-                            Select Field
+                            Crop Condition
 
                         </label>
 
-                        <select name="field_id"
+                        <select name="crop_condition"
 
                                 class="w-full rounded-2xl
-                                       border border-gray-300
-                                       dark:border-gray-700
-                                       bg-gray-50 dark:bg-[#0d1b2e]
-                                       text-gray-800 dark:text-white
+                                       border border-gray-700
+                                       bg-[#0d1b2e]
+                                       text-white
                                        px-6 py-5 text-lg">
 
-                            @foreach($fields as $field)
+                            <option value="Excellent">
+                                🌟 Excellent
+                            </option>
 
-                                <option value="{{ $field->id }}">
+                            <option value="Good">
+                                ✅ Good
+                            </option>
 
-                                    {{ $field->field_name }}
+                            <option value="Average">
+                                ⚠️ Average
+                            </option>
 
-                                </option>
+                            <option value="Poor">
+                                ❌ Poor
+                            </option>
 
-                            @endforeach
+                            <option value="Critical">
+                                🚨 Critical
+                            </option>
 
                         </select>
 
                     </div>
 
-                    <!-- Growth Stage -->
-                    <!-- <div>
+                    <!-- Visible Issues -->
+                    <div>
 
                         <label class="block mb-3
                                       text-lg font-semibold
-                                      text-gray-700 dark:text-gray-300">
+                                      text-white">
 
-                            Growth Stage
+                            Visible Issues
 
                         </label>
 
-                        <select name="growth_stage"
+                        <select name="visible_issue"
 
                                 class="w-full rounded-2xl
-                                       border border-gray-300
-                                       dark:border-gray-700
-                                       bg-gray-50 dark:bg-[#0d1b2e]
-                                       text-gray-800 dark:text-white
+                                       border border-gray-700
+                                       bg-[#0d1b2e]
+                                       text-white
                                        px-6 py-5 text-lg">
 
-                            <option value="Germination">
-                                Germination
+                            <option value="No Issues">
+                                ✅ No Issues
                             </option>
 
-                            <option value="Vegetative">
-                                Vegetative
+                            <option value="Yellow Leaves">
+                                🍂 Yellow Leaves
                             </option>
 
-                            <option value="Flowering">
-                                Flowering
+                            <option value="Brown Spots">
+                                🟤 Brown Spots
                             </option>
 
-                            <option value="Fruiting">
-                                Fruiting
+                            <option value="Dry Leaves">
+                                🌵 Dry Leaves
                             </option>
 
-                            <option value="Harvest">
-                                Harvest
+                            <option value="Slow Growth">
+                                🐌 Slow Growth
+                            </option>
+
+                            <option value="Pest Attack">
+                                🐛 Pest Attack
                             </option>
 
                         </select>
 
-                    </div> -->
-
-                    <!-- Health -->
-                    <div>
-
-                        <label class="block mb-3
-                                      text-lg font-semibold
-                                      text-gray-700 dark:text-gray-300">
-
-                            Health Percentage
-
-                        </label>
-
-                        <input type="number"
-                               name="health_percentage"
-                               min="0"
-                               max="100"
-
-                               class="w-full rounded-2xl
-                                      border border-gray-300
-                                      dark:border-gray-700
-                                      bg-gray-50 dark:bg-[#0d1b2e]
-                                      text-gray-800 dark:text-white
-                                      px-6 py-5 text-lg">
-
                     </div>
 
-                    <!-- Progress -->
+                    <!-- Crop Image -->
                     <div>
 
                         <label class="block mb-3
                                       text-lg font-semibold
-                                      text-gray-700 dark:text-gray-300">
+                                      text-white">
 
-                            Progress Percentage
-
-                        </label>
-
-                        <input type="number"
-                               name="progress_percentage"
-                               min="0"
-                               max="100"
-
-                               class="w-full rounded-2xl
-                                      border border-gray-300
-                                      dark:border-gray-700
-                                      bg-gray-50 dark:bg-[#0d1b2e]
-                                      text-gray-800 dark:text-white
-                                      px-6 py-5 text-lg">
-
-                    </div>
-
-                    <!-- Yield -->
-                    <div>
-
-                        <label class="block mb-3
-                                      text-lg font-semibold
-                                      text-gray-700 dark:text-gray-300">
-
-                            Predicted Yield (kg)
+                            Upload Crop Image
 
                         </label>
 
-                        <input type="number"
-                               step="0.01"
-                               name="predicted_yield"
+                        <div class="border-2 border-dashed
+                                    border-gray-700
+                                    rounded-3xl
+                                    p-10 text-center
+                                    bg-[#0d1b2e]">
 
-                               class="w-full rounded-2xl
-                                      border border-gray-300
-                                      dark:border-gray-700
-                                      bg-gray-50 dark:bg-[#0d1b2e]
-                                      text-gray-800 dark:text-white
-                                      px-6 py-5 text-lg">
+                            <input
+                                type="file"
+                                name="crop_image"
+                                accept="image/*"
+
+                                class="w-full
+                                       text-white"
+                            >
+
+                            <p class="text-gray-500 mt-4">
+
+                                Upload leaf or crop image for AI analysis
+
+                            </p>
+
+                        </div>
 
                     </div>
 
@@ -179,57 +189,40 @@
 
                         <label class="block mb-3
                                       text-lg font-semibold
-                                      text-gray-700 dark:text-gray-300">
+                                      text-white">
 
-                            Notes
+                            Additional Notes
 
                         </label>
 
                         <textarea name="notes"
-                                  rows="4"
+                                  rows="5"
+
+                                  placeholder="Describe anything unusual about the crop..."
 
                                   class="w-full rounded-2xl
-                                         border border-gray-300
-                                         dark:border-gray-700
-                                         bg-gray-50 dark:bg-[#0d1b2e]
-                                         text-gray-800 dark:text-white
+                                         border border-gray-700
+                                         bg-[#0d1b2e]
+                                         text-white
                                          px-6 py-5 text-lg"></textarea>
 
                     </div>
-<!-- Crop Image -->
-<div>
 
-    <label class="block mb-3
-                  text-lg font-semibold
-                  text-gray-700 dark:text-gray-300">
-
-        Crop Image
-
-    </label>
-
-    <input
-        type="file"
-        name="crop_image"
-        accept="image/*"
-
-        class="w-full rounded-2xl
-               border border-gray-300
-               dark:border-gray-700
-               bg-gray-50 dark:bg-[#0d1b2e]
-               text-gray-800 dark:text-white
-               px-6 py-5 text-lg"
-    >
-
-</div>
                     <!-- Submit -->
                     <button type="submit"
 
-                            class="bg-green-600 hover:bg-green-700
-                                   text-white font-bold text-lg
-                                   px-10 py-5 rounded-2xl
-                                   transition hover:scale-105">
+                            class="w-full
+                                   bg-green-600
+                                   hover:bg-green-700
+                                   text-white
+                                   font-bold
+                                   text-xl
+                                   py-5 rounded-2xl
+                                   transition
+                                   hover:scale-[1.02]
+                                   shadow-lg shadow-green-900/30">
 
-                        🌱 Save Progress
+                        🤖 Analyze Crop with AgroSense AI
 
                     </button>
 

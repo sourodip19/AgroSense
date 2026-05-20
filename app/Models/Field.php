@@ -13,7 +13,9 @@ class Field extends Model
         'soil_type',
         'sowing_date',
         'irrigation_status',
-        'field_status','field_size',
+        'field_status',
+        'field_size',
+
     ];
 
     public function farm()

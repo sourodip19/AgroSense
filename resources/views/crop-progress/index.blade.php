@@ -145,6 +145,17 @@
                                 {{ $progress->notes }}
 
                             </p>
+                             @if($progress->crop_image)
+
+        <img
+            src="{{ asset('storage/' . $progress->crop_image) }}"
+            class="w-48 h-48
+                   object-cover
+                   rounded-2xl mt-4"
+        >
+
+    @endif
+
 
                         </div>
 

@@ -15,7 +15,7 @@
                         border border-gray-200 dark:border-gray-800
                         rounded-3xl shadow-2xl p-10">
 
-                <form action="{{ route('crop-progress.store') }}"
+               <form action="{{ route('crop-progress.store', $field) }}"
       method="POST"
       enctype="multipart/form-data"
       class="space-y-8">

@@ -32,6 +32,7 @@ class FieldController extends Controller
             'sowing_date' => 'required',
             'irrigation_status' => 'required',
             'field_status' => 'required',
+            'field_size' => 'required|numeric|min:0.1',
         ]);
 
         Field::create([
@@ -42,6 +43,7 @@ class FieldController extends Controller
     'sowing_date' => $request->sowing_date,
     'irrigation_status' => $request->irrigation_status,
     'field_status' => $request->field_status,
+    'field_size' => $request->field_size,
 ]);
 
         return redirect()->route('fields.index')

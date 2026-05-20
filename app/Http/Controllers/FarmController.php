@@ -38,8 +38,10 @@ class FarmController extends Controller
         return redirect()->route('farms.index')
             ->with('success', 'Farm Added Successfully');
     }
-    public function show(Farm $farm)
+public function show(Farm $farm)
 {
+    $farm->load('fields');
+
     return view('farms.show', compact('farm'));
 }
 

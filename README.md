@@ -1,58 +1,368 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+````md
+# 🌾 AgroSense — AI Powered Smart Agriculture Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 📌 Overview
 
-## About Laravel
+AgroSense is an AI-powered smart agriculture platform designed to help farmers manage farms, monitor crop health, detect diseases, analyze growth progress, and receive intelligent farming recommendations.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The system combines:
+- 🌦️ Weather Monitoring
+- 🤖 AI Crop Analysis
+- 📷 Disease Detection using Images
+- 📊 Farm Analytics
+- 🌱 Crop Progress Tracking
+- 🧠 Gemini AI Farming Assistant
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+AgroSense aims to make modern farming more intelligent, data-driven, and farmer-friendly.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+# 🚀 Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 👨‍🌾 Farmer Dashboard
+- Smart analytics dashboard
+- Farm overview
+- Crop health insights
+- Weather monitoring
+- AI recommendations
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🏡 Farm Management
+Farmers can:
+- Add farms
+- Edit farms
+- Delete farms
+- Track farm location
+- Store total farm area
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 🌱 Field Management
+Each farm can contain multiple fields.
+
+Features:
+- Add field
+- Crop type selection
+- Soil type
+- Irrigation status
+- Field size tracking
+- Sowing date management
+
+---
+
+## 📈 Crop Progress Tracking
+Track crop growth with:
+- Growth stage detection
+- Health percentage
+- Progress percentage
+- Predicted yield
+- Crop age calculation
+
+---
+
+## 🤖 AI Crop Disease Detection
+Farmers can upload crop images.
+
+The AI system analyzes:
+- Crop condition
+- Possible diseases
+- Risk level
+- AI health score
+- Farming recommendations
+
+---
+
+## 🌦️ Live Weather Monitoring
+Integrated weather API provides:
+- Temperature
+- Humidity
+- Weather condition
+- Live location-based weather
+
+---
+
+## 🧠 AI Farming Assistant
+Farmers can search crops using local names like:
+- gehu
+- dhaan
+- alu
+- tamatar
+
+The AI responds in:
+✅ Hindi  
+✅ Farmer-friendly language  
+✅ Detailed farming guidance
+
+Including:
+- Best farming season
+- Irrigation
+- Fertilizers
+- Disease prevention
+- Yield improvement
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
+- HTML5
+- Tailwind CSS
+- Blade Templates
+- JavaScript
+
+## Backend
+- Laravel 13
+- PHP 8.4
+
+## Database
+- MySQL
+
+## APIs & AI
+- OpenWeather API
+- Gemini AI API
+
+---
+
+# 🧩 System Modules
+
+## 1. Authentication Module
+- Login
+- Registration
+- Role-based authentication
+
+---
+
+## 2. Farmer Module
+- Dashboard
+- Farm management
+- AI crop assistant
+- Weather tracking
+
+---
+
+## 3. Farm Module
+- Farm CRUD operations
+- Location tracking
+
+---
+
+## 4. Field Module
+- Field CRUD operations
+- Crop tracking
+
+---
+
+## 5. Crop Progress Module
+- Growth monitoring
+- AI disease analysis
+- Image uploads
+
+---
+
+# 🤖 AI Features
+
+## AI Crop Health Analysis
+Uses AI to:
+- Detect crop diseases
+- Estimate crop health
+- Predict risks
+- Suggest improvements
+
+---
+
+## AI Farming Assistant
+Natural language farming guidance in Hindi.
+
+Example:
+
+Input:
+gehu
+
+Output:
+गेहूं की खेती के लिए दोमट मिट्टी सबसे उपयुक्त होती है...
+
+---
+
+# 📸 Screenshots
+
+## Dashboard
+- Weather analytics
+- Crop analytics
+- AI insights
+
+## Disease Detection
+- Image upload
+- AI health report
+
+## AI Farming Assistant
+- Hindi crop guidance
+
+---
+
+# ⚙️ Installation
+
+## 1. Clone Repository
 
 ```bash
-composer require laravel/boost --dev
+git clone https://github.com/yourusername/agrosense.git
+````
 
-php artisan boost:install
+---
+
+## 2. Go to Project Folder
+
+```bash
+cd agrosense
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## 3. Install Dependencies
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer install
+npm install
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 4. Configure Environment
 
-## Security Vulnerabilities
+Copy `.env.example`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 5. Generate App Key
+
+```bash
+php artisan key:generate
+```
+
+---
+
+## 6. Configure Database
+
+Inside `.env`
+
+```env
+DB_DATABASE=agrosense
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+---
+
+## 7. Configure APIs
+
+```env
+OPENWEATHER_API_KEY=your_key
+GEMINI_API_KEY=your_key
+```
+
+---
+
+## 8. Run Migrations
+
+```bash
+php artisan migrate
+```
+
+---
+
+## 9. Create Storage Link
+
+```bash
+php artisan storage:link
+```
+
+---
+
+## 🔟 Run Development Server
+
+```bash
+php artisan serve
+```
+
+---
+
+# 📂 Project Structure
+
+```txt
+app/
+ ├── Http/
+ │   ├── Controllers/
+ │   ├── Middleware/
+ │
+ ├── Models/
+ │
+ ├── Services/
+
+resources/
+ ├── views/
+ │   ├── farmer/
+ │   ├── farms/
+ │   ├── fields/
+ │   ├── crop-progress/
+
+routes/
+ ├── web.php
+```
+
+---
+
+# 🔐 Roles
+
+| Role   | Access                 |
+| ------ | ---------------------- |
+| Admin  | Full access            |
+| Farmer | Farm & crop management |
+| Expert | Monitoring & analytics |
+
+---
+
+# 📊 Future Improvements
+
+* 🎙️ Voice Assistant
+* 🛰️ Satellite Crop Monitoring
+* 💧 Smart Irrigation System
+* 📱 Mobile App
+* 🌍 Multi-language Support
+* 🤖 AI Chatbot
+* 📦 Marketplace Integration
+
+---
+
+# 🎯 Project Goal
+
+The goal of AgroSense is to empower farmers with:
+
+* AI technology
+* Smart analytics
+* Real-time monitoring
+* Easy farming guidance
+
+to improve:
+✅ productivity
+✅ crop quality
+✅ decision-making
+✅ sustainable agriculture
+
+---
+
+# 👨‍💻 Developed By
+
+Sourodip Dey
+
+---
+
+# 📜 License
+
+This project is developed for educational and research purposes.
+
+```
+```

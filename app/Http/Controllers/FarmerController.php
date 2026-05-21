@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Farm;
 use App\Models\Field;
 use App\Models\CropProgress;
-
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -219,4 +219,104 @@ class FarmerController extends Controller
             'success' => true
         ]);
     }
+  
+
+public function cropSearch(Request $request)
+{
+    $request->validate([
+
+        'crop_name' => 'required'
+
+    ]);
+
+    $crop = $request->crop_name;
+
+    $apiKey = env('GEMINI_API_KEY');
+
+    $prompt = "
+
+You are an expert Indian agriculture advisor.
+
+The farmer searched: {$crop}
+
+Understand local Indian crop names.
+
+Respond ONLY in simple Hindi.
+
+Give detailed farming guidance including:
+
+1. खेती का सही समय
+2. मिट्टी
+3. सिंचाई
+4. खाद
+5. रोग नियंत्रण
+6. उत्पादन बढ़ाने के तरीके
+
+Make response farmer-friendly.
+
+";
+
+    try {
+
+        $response = Http::timeout(20)
+
+            ->post(
+
+                 "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}",
+
+                [
+
+                    'contents' => [[
+
+                        'parts' => [[
+
+                            'text' => $prompt
+
+                        ]]
+
+                    ]]
+
+                ]
+
+            );
+
+        $data = $response->json();
+
+        if (
+            isset(
+                $data['candidates'][0]['content']['parts'][0]['text']
+            )
+        ) {
+
+            $result =
+                $data['candidates'][0]['content']['parts'][0]['text'];
+
+        } elseif (isset($data['error'])) {
+
+            $result =
+                'API Error: ' .
+                $data['error']['message'];
+
+        } else {
+
+            $result =
+                'AI service temporarily unavailable.';
+        }
+
+    } catch (\Exception $e) {
+
+        $result =
+            'Server Error: ' .
+            $e->getMessage();
+    }
+
+    return back()->with(
+        'crop_ai_result',
+        $result
+    );
+}
+
+
+
+
 }
